@@ -67,3 +67,26 @@ body{
     text-align: center;
     margin: 5px 0;
 }
+
+.top-masteries{
+    text-align: right;
+    margin-top: 20px;
+    margin-right: 50px;
+    font-size: 17px;
+    color: #fff;
+}
+
+.top-masteries a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.rotation-list{
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+}
+
