@@ -165,7 +165,7 @@ const IdToName = {
     893: "Aurora"
 };
 
-const APIKey = '***REMOVED***';
+const APIKey = '';
 
 async function getPuuid(gameName, tagLine, server, APIKey) {
     try{
