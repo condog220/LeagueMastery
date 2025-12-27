@@ -74,6 +74,10 @@ body{
     margin-right: 50px;
     font-size: 17px;
     color: #fff;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: end;
+    gap: 20px;
 }
 
 .top-masteries a{
@@ -90,3 +94,45 @@ body{
     gap: 5%;
 }
 
+.count{
+    margin-right: 10px;
+}
+
+.match-history{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.match-card{
+    display: flex;
+    width: 40%;
+    background-color: #2E2E2E;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.match-card img{
+    width: 15%;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 0.001px;
+}
+
+.match-card p{
+    margin-left: 10px;
+}
+
+.win{
+    background: #28344E;
+    border: #5383E8 solid;
+}
+
+.lose{
+    background: #59343B;
+    border: #E84057 solid
+}

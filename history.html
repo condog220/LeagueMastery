@@ -3,28 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>League Mastery Tracker</title>
+    <title>Match History</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav>
-        <div class="top-masteries">
-            <a href="top.html">View Free Rotation</a>
-            <a href="history.html">Match History</a>
-        </div>  
+    <nav class="top-masteries">
+        <a href="index.html">Mastery Tracker</a>
+        <a href="top.html">View Free Rotation</a>
     </nav>
     <div class="container">
         <div class="intro">
-            <h1>League Mastery Tracker</h1>
-            <p>Reveal your top champion masteries</p>
+            <h1>Match History</h1>
+            <p>View your recent matches</p>
         </div>
         <div class="search">
             <input type="text" placeholder="Enter Summoner Name">
             <button>Search</button>
-            <div class="count">
+            <div class="region-select">
                 <label for="region">
                     <select id="region">
                         <option value="NA1">NA</option>
@@ -34,14 +32,15 @@
                         <option value="JP1">JP</option>
                         <option value="BR1">BR</option>
                         <option value="OC1">OCE</option>
+                    </select>
                 </label>
-                <p>Amount of champs</p>
-                <input type="number" min="1" max="9" value="5">
             </div>
         </div>
-        <div class="masteries">
+        <div class="match-history">
         </div>
+
+
     </div>
-    <script type="module" src="index.js"></script>
+    <script type="module" src="history.js"></script>
 </body>
 </html>
