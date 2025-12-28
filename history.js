@@ -4,6 +4,12 @@ import { APIKey, getPuuid, getHistoryData, getMatchDetails } from './API.js';
 const searchBox = document.querySelector('.search input');
 const searchButton = document.querySelector('.search button');
 
+async function getPatch(){
+    const patch = await fetch("https://ddragon.leagueoflegends.com/api/versions.json")
+    const data = await patch.json();
+    return data[0];
+}
+
 searchButton.addEventListener('click', () => {
     const input = searchBox.value.trim();
     const [gameName, tagLine] = input.split('#');
@@ -17,6 +23,7 @@ searchButton.addEventListener('click', () => {
     if (gameName && tagLine) {
         getPuuid(gameName, tagLine, server, APIKey).then(puuid => {
             getHistoryData(puuid, server, APIKey).then(matchIds => {
+                console.log(matchIds);
                 displayMatchHistory(matchIds, server, APIKey, puuid);
             }).catch(error => {
                 console.error(error);
@@ -35,10 +42,13 @@ async function displayMatchHistory(matchIds, server, APIKey, puuid) {
     const container = document.querySelector('.match-history');
     container.innerHTML = '';
 
-    for(const matchId of matchIds.slice(0,5)) {
+    const patch = await getPatch();
+    console.log(patch);
+
+    for(const matchId of matchIds.slice(0,20)) {
         try {
             const matchData = await getMatchDetails(matchId, server, APIKey);
-            const historyCard = createCard(matchData, puuid);
+            const historyCard = createCard(matchData, puuid,patch);
             container.appendChild(historyCard);
         }
         catch (error) {
@@ -47,7 +57,7 @@ async function displayMatchHistory(matchIds, server, APIKey, puuid) {
     } 
 }
 
-function createCard(matchData, puuid){
+function createCard(matchData, puuid, patch){
     const card = document.createElement('div');
     card.classList.add('match-card');
 
@@ -61,6 +71,27 @@ function createCard(matchData, puuid){
     const champName = IdToName[user.championId] || '?';
     const kda = `${user.kills}/${user.deaths}/${user.assists}`;
     const creepScore = user.totalMinionsKilled + user.neutralMinionsKilled;
+    const duration = matchData.info.gameDuration;
+    const minutes = Math.floor(duration/60);
+    const seconds = duration % 60;
+
+    const items = [
+        user.item0,
+        user.item1,
+        user.item2,
+        user.item3,
+        user.item4,
+        user.item5
+    ].filter(itemId => itemId !== 0);
+
+    const itemImages = items.map(itemId => `
+    <img 
+        src="https://ddragon.leagueoflegends.com/cdn/${patch}/img/item/${itemId}.png"
+        width="32"
+        alt="Item ${itemId}"
+    >
+    `).join('');
+    
     if(user.win === true){
         card.classList.add('win');
     } else {
@@ -68,11 +99,15 @@ function createCard(matchData, puuid){
     }
 
     card.innerHTML = `
-    <img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${user.championId}.png" alt="${champName}" width="50">
+    <img class="champimg" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${user.championId}.png" alt="${champName}" width="50">
         <div class="match-info">
+            <p>Match Duration: ${minutes}:${seconds}</p>
             <p><strong>${champName}</strong></p>
             <p>KDA: ${kda}</p>
             <p>Minions Killed: ${creepScore}</p>
+            <div class="items">
+                ${itemImages}
+            </div>
         </div>`;
 
     return card;

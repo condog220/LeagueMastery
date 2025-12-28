@@ -215,7 +215,7 @@ async function fetchRotationData(APIKey) {
 
 async function getHistoryData(puuid, region, APIKey) {
     try{
-        const response = await fetch(`https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10&api_key=${APIKey}`);
+        const response = await fetch(`https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=20&api_key=${APIKey}`);
         if (!response.ok) {
             throw new Error('Match history data not found');
         }
