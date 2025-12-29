@@ -24,7 +24,7 @@ A web application that allows users to view top champion masteries.
     - Log in and copy your development API key.
 
 3.  **Configure the API Key**:
-    - Open `index.js` in a text editor.
+    - Open `API.js` in a text editor.
     - Find the line `const APIKey = '...';`.
     - Replace the existing key with your new API key.
 
