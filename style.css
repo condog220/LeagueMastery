@@ -4,7 +4,7 @@
 }
 
 body{
-    background-color: #3C3C3C;
+    background-color: #2b608f;
     padding-bottom: 40px;
 }
 
@@ -107,8 +107,9 @@ body{
 
 .match-card{
     display: flex;
+    align-items: center;
     height: 20%;
-    width: 50%;
+    width: 40%;
     background-color: #2E2E2E;
     border-radius: 10px;
     padding: 25px;
@@ -117,7 +118,9 @@ body{
 }
 
 .champimg{
-    width: 15%;
+    width: 120px;
+    height: 120px;
+    
     border-radius: 10px;
     border-style: solid;
     border-width: 0.001px;
@@ -126,6 +129,7 @@ body{
 
 .match-card img{
     border: #fff solid 0.001px;
+    margin-left: 2px;
 }
 
 .match-card p{
@@ -140,4 +144,41 @@ body{
 .lose{
     background: #59343B;
     border: #E84057 solid
+}
+
+.rankInfo{
+    display: flex;
+    flex-direction: column;
+    background-color:#28344E;
+    width: 45%;
+    height: 5%;
+    align-items: center;
+    justify-content: center;
+    margin: 25px auto 0 auto;
+    text-align: center;
+    border-radius: 10px;
+    border:#5383E8 solid 0.001px;
+}
+
+.rankInfo img{
+    width: 20%;
+    height: 20%;
+    
+}
+
+.match-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.items{
+    display: grid;
+    grid-template-columns: repeat(3,32px);
+    gap: 7px;
+}
+
+#rank{
+    font-size: 20px;
 }

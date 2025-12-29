@@ -1,14 +1,8 @@
 import { IdToName } from './API.js';
-import { APIKey, getPuuid, getHistoryData, getMatchDetails } from './API.js';
+import { APIKey, getPuuid, getHistoryData, getMatchDetails, getPatch } from './API.js';
 
 const searchBox = document.querySelector('.search input');
 const searchButton = document.querySelector('.search button');
-
-async function getPatch(){
-    const patch = await fetch("https://ddragon.leagueoflegends.com/api/versions.json")
-    const data = await patch.json();
-    return data[0];
-}
 
 searchButton.addEventListener('click', () => {
     const input = searchBox.value.trim();
@@ -23,7 +17,9 @@ searchButton.addEventListener('click', () => {
     if (gameName && tagLine) {
         getPuuid(gameName, tagLine, server, APIKey).then(puuid => {
             getHistoryData(puuid, server, APIKey).then(matchIds => {
-                console.log(matchIds);
+                getSummonerInfo(puuid, region, APIKey).then(data =>{
+                    displayRankInfo(data);
+                });
                 displayMatchHistory(matchIds, server, APIKey, puuid);
             }).catch(error => {
                 console.error(error);
@@ -37,6 +33,22 @@ searchButton.addEventListener('click', () => {
         alert("Please enter Riot ID as: name#tag");
     }
 });
+
+async function getSummonerInfo(puuid, region, APIKey){
+    try{
+        const response = await fetch(`https://${region}.api.riotgames.com/lol/league/v4/entries/by-puuid/${puuid}?api_key=${APIKey}`)
+        if (!response.ok){
+            throw new Error("Summoner not found");
+        }
+        const data = await response.json();
+        displayRankInfo(data);
+        return data;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
 
 async function displayMatchHistory(matchIds, server, APIKey, puuid) {
     const container = document.querySelector('.match-history');
@@ -55,6 +67,30 @@ async function displayMatchHistory(matchIds, server, APIKey, puuid) {
             console.error('Error fetching match')
         }
     } 
+}
+
+function displayRankInfo(data){
+    const rankInfo = document.querySelector('.rankInfo');
+
+
+    if(data && data.length > 0){
+        const soloQ = data.find(entry => entry.queueType === "RANKED_SOLO_5x5") || data[0];
+        const rank = soloQ.tier;
+        const division = soloQ.rank;
+        const wins = soloQ.wins;
+        const loss = soloQ.losses;
+        const winrate = wins/(wins+loss)*100;
+        const rounded = winrate.toFixed(1);
+
+        rankInfo.innerHTML = `
+        <p id="rank">${rank} ${division}</p>
+        <img src="./img/${rank}.png">
+        <p><strong>${rounded}%</strong></p>
+        <p>W: ${wins} L: ${loss}`;
+    } else{
+        rankInfo.innerHTML = `Unranked`;
+    }
+
 }
 
 function createCard(matchData, puuid, patch){
@@ -81,7 +117,7 @@ function createCard(matchData, puuid, patch){
         user.item2,
         user.item3,
         user.item4,
-        user.item5
+        user.item5,
     ].filter(itemId => itemId !== 0);
 
     const itemImages = items.map(itemId => `
@@ -101,10 +137,12 @@ function createCard(matchData, puuid, patch){
     card.innerHTML = `
     <img class="champimg" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${user.championId}.png" alt="${champName}" width="50">
         <div class="match-info">
-            <p>Match Duration: ${minutes}:${seconds}</p>
-            <p><strong>${champName}</strong></p>
-            <p>KDA: ${kda}</p>
-            <p>Minions Killed: ${creepScore}</p>
+            <div class="matchStats">
+                <p>Match Duration: ${minutes}:${seconds}</p>
+                <p><strong>${champName}</strong></p>
+                <p>KDA: ${kda}</p>
+                <p>Minions Killed: ${creepScore}</p>
+            </div>
             <div class="items">
                 ${itemImages}
             </div>

@@ -244,4 +244,10 @@ async function getMatchDetails(matchId, server, APIKey){
     }
 }
 
-export { getPuuid, getMasteryData, fetchRotationData, getHistoryData, getMatchDetails, APIKey, IdToName };
+async function getPatch(){
+    const patch = await fetch("https://ddragon.leagueoflegends.com/api/versions.json")
+    const data = await patch.json();
+    return data[0];
+}
+
+export { getPuuid, getMasteryData, fetchRotationData, getHistoryData, getMatchDetails, getPatch, APIKey, IdToName };
