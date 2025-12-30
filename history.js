@@ -70,7 +70,10 @@ async function displayMatchHistory(matchIds, server, APIKey, puuid) {
 }
 
 function displayRankInfo(data){
-    const rankInfo = document.querySelector('.rankInfo');
+    const profile = document.querySelector('.profile');
+    profile.innerHTML = '';
+    const rankInfo = document.createElement('div');
+    rankInfo.classList.add('rankInfo');
 
 
     if(data && data.length > 0){
@@ -91,11 +94,14 @@ function displayRankInfo(data){
         rankInfo.innerHTML = `Unranked`;
     }
 
+    profile.appendChild(rankInfo);
+
 }
 
 function createCard(matchData, puuid, patch){
     const card = document.createElement('div');
     card.classList.add('match-card');
+    card.classList.add()
 
     const user = matchData.info.participants.find(p => p.puuid === puuid);
 

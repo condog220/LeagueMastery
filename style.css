@@ -22,12 +22,64 @@ body{
     margin-top: 20px;
 }
 
+.search{
+    background-color: #2E2E2E;
+    width: 19%;
+    padding: 10px;
+    border-radius: 10px;
+    margin: auto;
+}
+
 .search input{
+    background-color: #2E2E2E;
+    border: none;
+    color: #fff;
+    border-radius: 7px;
     padding: 5px;
+    text-align: center;
 }
 
 .search button{
+    background-color: #2b608f;
+    text-decoration: none;
+    border: #28344E solid 0.001px;
+    border-radius: 7px;
     padding: 5px;
+    transition: 0.4s;
+}
+
+.search button:hover{
+    background-color:#5383E8;
+}
+
+.region-select{
+    margin-top: 10px;
+}
+
+#region{
+    background-color: #2b608f;
+    text-decoration: none;
+    border: #28344E solid 0.001px;
+    border-radius: 7px;
+}
+
+.count{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.count input{
+    background-color: #2b608f;
+    text-decoration: none;
+    border: #28344E solid 0.001px;
+    border-radius: 7px;
+    height: 40%;
+    width: 12%;
+    color: black;
 }
 
 .masteries{
@@ -38,6 +90,7 @@ body{
     align-items: center;
     gap: 5%;
 }
+
 
 .mastery-card{
     border-radius: 10px;
@@ -93,6 +146,8 @@ body{
     align-items: center;
     gap: 5%;
 }
+
+
 
 .count{
     margin-right: 10px;
@@ -181,4 +236,13 @@ body{
 
 #rank{
     font-size: 20px;
+}
+
+@media (max-width:1000px) {
+    .masteries{
+        grid-template-columns: repeat(2, auto);
+    }
+    .rotation-list{
+        grid-template-columns: repeat(2, auto); 
+    }
 }
