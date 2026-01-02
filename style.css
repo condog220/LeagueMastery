@@ -170,6 +170,7 @@ body{
     padding: 25px;
     margin-bottom: 20px;
     gap: 10px;
+    box-sizing: border-box;
 }
 
 .champimg{
@@ -238,11 +239,36 @@ body{
     font-size: 20px;
 }
 
+.matchStats{
+    margin: 4px 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 @media (max-width:1000px) {
     .masteries{
         grid-template-columns: repeat(2, auto);
     }
     .rotation-list{
         grid-template-columns: repeat(2, auto); 
+    }
+    .match-card{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .items{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3px;
+        
+    }
+    .match-info{
+        flex-direction: column;
+    }
+    .champimg{
+        display: block;
+        margin: 8px;
     }
 }
