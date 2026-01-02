@@ -35,8 +35,3 @@ A comprehensive web application for tracking League of Legends player statistics
     - Open `API.js` in a text editor.
     - Find the line `const APIKey = '...';` (or similar).
     - Replace the placeholder with your actual development API key.
-
-4.  **Run the App**:
-    - **Mastery Tracker**: Open `index.html` in your web browser.
-    - **Match History**: Open `history.html` in your web browser.
-    - **Champion Rotation**: Open `top.html` in your web browser.
