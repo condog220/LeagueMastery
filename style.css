@@ -228,6 +228,7 @@ body{
 }
 
 .match-info{
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -283,7 +284,12 @@ body{
     flex-direction: column;
 }
 
+.allyTeam{
+    margin-left: 4px;
+}
+
 
 .allyTeam img{
     width: 32px;
 }
+

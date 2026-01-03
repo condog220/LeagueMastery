@@ -103,6 +103,33 @@ function displayRankInfo(data){
 
 }
 
+function getItems(matchData, puuid, user){
+    if(!user) return [];
+
+    const items = [
+        user.item0,
+        user.item1,
+        user.item2,
+        user.item3,
+        user.item4,
+        user.item5
+    ].filter(itemId => itemId !== 0);
+
+    return items;
+
+}
+
+function getAlliedChamps(matchData, user, puuid, team){
+    const alliedChampions = matchData.info.participants
+    .filter(p => p.teamId === team && p.puuid !== puuid)
+    .map(p => ({
+        champ: p.championName
+    }));
+
+    return alliedChampions;
+
+}
+
 function createCard(matchData, puuid, patch){
     const card = document.createElement('div');
     card.classList.add('match-card');
@@ -116,6 +143,7 @@ function createCard(matchData, puuid, patch){
         return card;
     }
 
+    // Retrieve important details
     const champName = IdToName[user.championId] || '?';
     const kda = `${user.kills}/${user.deaths}/${user.assists}`;
     const creepScore = user.totalMinionsKilled + user.neutralMinionsKilled;
@@ -125,21 +153,14 @@ function createCard(matchData, puuid, patch){
 
     // Add item build
 
-    const items = [
-        user.item0,
-        user.item1,
-        user.item2,
-        user.item3,
-        user.item4,
-        user.item5,
-    ].filter(itemId => itemId !== 0);
+    const items = getItems(matchData, puuid, user)
 
     const itemImages = items.map(itemId => `
     <img 
         src="https://ddragon.leagueoflegends.com/cdn/${patch}/img/item/${itemId}.png"
         width="32"
         alt="Item ${itemId}"
-    >
+    </img>
     `).join('');
     
     if(user.win === true){
@@ -150,13 +171,9 @@ function createCard(matchData, puuid, patch){
 
     // Add ally team icons 
 
-    const alliedChampions = matchData.info.participants
-    .filter(p => p.teamId === team && p.puuid !== puuid)
-    .map(p => ({
-        champ: p.championName
-    }));
+    const allies = getAlliedChamps(matchData, user, puuid, team)
 
-    const allyTeamHTML = alliedChampions
+    const allyTeamHTML = allies
     .map(ally => `
         <img
             class="ally-champ"
@@ -180,10 +197,10 @@ function createCard(matchData, puuid, patch){
     </div>
         <div class="match-info">
             <div class="matchStats">
-                <p>Match Duration: ${minutes}:${seconds}</p>
+                <p id="length">Match Duration: ${minutes}:${seconds}</p>
                 <p><strong>${champName}</strong></p>
                 <p>KDA: ${kda}</p>
-                <p>Minions Killed: ${creepScore}</p>
+                <p>CS: ${creepScore}</p>
             </div>
             <div class="items">
                 ${itemImages}
