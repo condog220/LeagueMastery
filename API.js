@@ -165,6 +165,8 @@ const IdToName = {
     893: "Aurora"
 };
 
+// Edit this to your own key
+
 const APIKey = '';
 
 async function getPuuid(gameName, tagLine, server, APIKey) {

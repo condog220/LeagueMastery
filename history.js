@@ -17,6 +17,7 @@ searchButton.addEventListener('click', () => {
     if (gameName && tagLine) {
         getPuuid(gameName, tagLine, server, APIKey).then(puuid => {
             getHistoryData(puuid, server, APIKey).then(matchIds => {
+                console.log(matchIds)
                 getSummonerInfo(puuid, region, APIKey).then(data =>{
                     displayRankInfo(data);
                 });
@@ -50,6 +51,8 @@ async function getSummonerInfo(puuid, region, APIKey){
     }
 }
 
+// Get history details to be sent to create our card.
+
 async function displayMatchHistory(matchIds, server, APIKey, puuid) {
     const container = document.querySelector('.match-history');
     container.innerHTML = '';
@@ -68,6 +71,8 @@ async function displayMatchHistory(matchIds, server, APIKey, puuid) {
         }
     } 
 }
+
+// Display rank information for user entered.
 
 function displayRankInfo(data){
     const profile = document.querySelector('.profile');
@@ -104,6 +109,7 @@ function createCard(matchData, puuid, patch){
     card.classList.add()
 
     const user = matchData.info.participants.find(p => p.puuid === puuid);
+    const team = user.teamId;
 
     if(!user){
         card.innerHTML = '<p>Not found in match.</p>';
@@ -116,6 +122,8 @@ function createCard(matchData, puuid, patch){
     const duration = matchData.info.gameDuration;
     const minutes = Math.floor(duration/60);
     const seconds = duration % 60;
+
+    // Add item build
 
     const items = [
         user.item0,
@@ -140,8 +148,36 @@ function createCard(matchData, puuid, patch){
         card.classList.add('lose');
     }
 
+    // Add ally team icons 
+
+    const alliedChampions = matchData.info.participants
+    .filter(p => p.teamId === team && p.puuid !== puuid)
+    .map(p => ({
+        champ: p.championName
+    }));
+
+    const allyTeamHTML = alliedChampions
+    .map(ally => `
+        <img
+            class="ally-champ"
+            src="https://ddragon.leagueoflegends.com/cdn/${patch}/img/champion/${ally.champ}.png"
+            alt="${ally.champ}"
+            title="${ally.champ}"
+        />
+    `)
+    .join('');
+
+    // Generate the card.
+
     card.innerHTML = `
-    <img class="champimg" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${user.championId}.png" alt="${champName}" width="50">
+    <div class="champIcons">
+        <div class="MainChamp">
+            <img class="champimg" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${user.championId}.png" alt="${champName}" width="50">
+        </div>
+        <div class="allyTeam">
+            ${allyTeamHTML}
+        </div>
+    </div>
         <div class="match-info">
             <div class="matchStats">
                 <p>Match Duration: ${minutes}:${seconds}</p>

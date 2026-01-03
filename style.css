@@ -23,6 +23,8 @@ body{
 }
 
 .search{
+    display: flex;
+    flex-direction: column;
     background-color: #2E2E2E;
     width: 19%;
     padding: 10px;
@@ -37,6 +39,7 @@ body{
     border-radius: 7px;
     padding: 5px;
     text-align: center;
+    text-overflow: ellipsis;
 }
 
 .search button{
@@ -45,11 +48,17 @@ body{
     border: #28344E solid 0.001px;
     border-radius: 7px;
     padding: 5px;
+    width: auto;
     transition: 0.4s;
 }
 
 .search button:hover{
     background-color:#5383E8;
+}
+.searchbox input{
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .region-select{
@@ -65,10 +74,6 @@ body{
 
 .count{
     margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     gap: 4px;
 }
 
@@ -271,4 +276,14 @@ body{
         display: block;
         margin: 8px;
     }
+}
+
+.champIcons{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.allyTeam img{
+    width: 32px;
 }
