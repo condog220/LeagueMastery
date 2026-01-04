@@ -63,7 +63,7 @@ async function displayMatchHistory(matchIds, server, APIKey, puuid) {
     for(const matchId of matchIds.slice(0,20)) {
         try {
             const matchData = await getMatchDetails(matchId, server, APIKey);
-            const historyCard = createCard(matchData, puuid,patch);
+            const historyCard = await createCard(matchData, puuid,patch);
             container.appendChild(historyCard);
         }
         catch (error) {
@@ -130,7 +130,41 @@ function getAlliedChamps(matchData, user, puuid, team){
 
 }
 
-function createCard(matchData, puuid, patch){
+let cachedRunes = null;
+
+async function getRunesData(patch) {
+    if (cachedRunes) return cachedRunes;
+
+    const res = await fetch(
+        `https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/runesReforged.json`
+    );
+    cachedRunes = await res.json();
+    return cachedRunes;
+}
+
+function getRunes(keystoneId, secondaryTreeId, runesData) {
+    let keystone = null;
+    let secondaryTree = null;
+
+    for (const tree of runesData) {
+        if (tree.id === secondaryTreeId) {
+            secondaryTree = tree;
+        }
+
+        for (const slot of tree.slots) {
+            for (const rune of slot.runes) {
+                if (rune.id === keystoneId) {
+                    keystone = rune;
+                }
+            }
+        }
+    }
+
+    return { keystone, secondaryTree };
+}
+
+
+async function createCard(matchData, puuid, patch){
     const card = document.createElement('div');
     card.classList.add('match-card');
     card.classList.add()
@@ -147,6 +181,19 @@ function createCard(matchData, puuid, patch){
     const champName = IdToName[user.championId] || '?';
     const kda = `${user.kills}/${user.deaths}/${user.assists}`;
     const creepScore = user.totalMinionsKilled + user.neutralMinionsKilled;
+    const runes =  user.perks.styles;
+
+
+    const primaryRune = runes.find(p => p.description === "primaryStyle");
+    const secondaryRune = runes.find(p => p.description === "subStyle");
+
+    const mainKeystone = primaryRune.selections[0].perk;
+    const secondaryKeystone = secondaryRune.style;
+
+    const runesData = await getRunesData(patch);
+    const { keystone, secondaryTree } =
+    getRunes(mainKeystone, secondaryKeystone, runesData);
+
     const duration = matchData.info.gameDuration;
     const minutes = Math.floor(duration/60);
     const seconds = duration % 60;
@@ -199,6 +246,18 @@ function createCard(matchData, puuid, patch){
             <div class="matchStats">
                 <p id="length">Match Duration: ${minutes}:${seconds}</p>
                 <p><strong>${champName}</strong></p>
+                <div class="runes">
+                    <img
+                        src="https://ddragon.leagueoflegends.com/cdn/img/${keystone.icon}"
+                        width="32"
+                        title="${keystone.name}"
+                    />
+                    <img
+                        src="https://ddragon.leagueoflegends.com/cdn/img/${secondaryTree.icon}"
+                        width="32"
+                        title="${secondaryTree.name}"
+                    />
+                </div>
                 <p>KDA: ${kda}</p>
                 <p>CS: ${creepScore}</p>
             </div>

@@ -293,3 +293,7 @@ body{
     width: 32px;
 }
 
+.runes img{
+    border: none;
+}
+
