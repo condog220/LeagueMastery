@@ -50,11 +50,13 @@ body{
     padding: 5px;
     width: auto;
     transition: 0.4s;
+    margin-top: 10px;
 }
 
 .search button:hover{
     background-color:#5383E8;
 }
+
 .searchbox input{
     width: 100%;
     min-width: 0;
@@ -62,7 +64,7 @@ body{
 }
 
 .region-select{
-    margin-top: 10px;
+    margin-top: 4px;
 }
 
 #region{
@@ -73,7 +75,7 @@ body{
 }
 
 .count{
-    margin-top: 10px;
+    margin-top: 5px;
     gap: 4px;
 }
 
@@ -150,12 +152,6 @@ body{
     justify-content: center;
     align-items: center;
     gap: 5%;
-}
-
-
-
-.count{
-    margin-right: 10px;
 }
 
 .match-history{
@@ -294,6 +290,8 @@ body{
 }
 
 .runes img{
+    background-color: #2B608F;
     border: none;
+    border-radius: 15px;
 }
 

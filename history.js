@@ -150,6 +150,7 @@ function getRunes(keystoneId, secondaryTreeId, runesData) {
         if (tree.id === secondaryTreeId) {
             secondaryTree = tree;
         }
+        
 
         for (const slot of tree.slots) {
             for (const rune of slot.runes) {
@@ -181,9 +182,8 @@ async function createCard(matchData, puuid, patch){
     const champName = IdToName[user.championId] || '?';
     const kda = `${user.kills}/${user.deaths}/${user.assists}`;
     const creepScore = user.totalMinionsKilled + user.neutralMinionsKilled;
+    
     const runes =  user.perks.styles;
-
-
     const primaryRune = runes.find(p => p.description === "primaryStyle");
     const secondaryRune = runes.find(p => p.description === "subStyle");
 
@@ -191,12 +191,12 @@ async function createCard(matchData, puuid, patch){
     const secondaryKeystone = secondaryRune.style;
 
     const runesData = await getRunesData(patch);
-    const { keystone, secondaryTree } =
-    getRunes(mainKeystone, secondaryKeystone, runesData);
+    const { keystone, secondaryTree } = getRunes(mainKeystone, secondaryKeystone, runesData);
 
     const duration = matchData.info.gameDuration;
     const minutes = Math.floor(duration/60);
     const seconds = duration % 60;
+    const csMin = (creepScore/minutes).toFixed(1);
 
     // Add item build
 
@@ -249,17 +249,17 @@ async function createCard(matchData, puuid, patch){
                 <div class="runes">
                     <img
                         src="https://ddragon.leagueoflegends.com/cdn/img/${keystone.icon}"
-                        width="32"
+                        width="32px"
                         title="${keystone.name}"
                     />
                     <img
                         src="https://ddragon.leagueoflegends.com/cdn/img/${secondaryTree.icon}"
-                        width="32"
+                        width="24px"
                         title="${secondaryTree.name}"
                     />
                 </div>
                 <p>KDA: ${kda}</p>
-                <p>CS: ${creepScore}</p>
+                <p>CS: ${creepScore} (${csMin}/min)</p>
             </div>
             <div class="items">
                 ${itemImages}
