@@ -103,7 +103,7 @@ function displayRankInfo(data){
 
 }
 
-function getItems(matchData, puuid, user){
+function getItems(user){
     if(!user) return [];
 
     const items = [
@@ -119,7 +119,7 @@ function getItems(matchData, puuid, user){
 
 }
 
-function getAlliedChamps(matchData, user, puuid, team){
+function getAlliedChamps(matchData, puuid, team){
     const alliedChampions = matchData.info.participants
     .filter(p => p.teamId === team && p.puuid !== puuid)
     .map(p => ({
@@ -182,6 +182,8 @@ async function createCard(matchData, puuid, patch){
     const champName = IdToName[user.championId] || '?';
     const kda = `${user.kills}/${user.deaths}/${user.assists}`;
     const creepScore = user.totalMinionsKilled + user.neutralMinionsKilled;
+
+    // Retrieve runes
     
     const runes =  user.perks.styles;
     const primaryRune = runes.find(p => p.description === "primaryStyle");
@@ -193,6 +195,8 @@ async function createCard(matchData, puuid, patch){
     const runesData = await getRunesData(patch);
     const { keystone, secondaryTree } = getRunes(mainKeystone, secondaryKeystone, runesData);
 
+    // Displaying time and CS/Min
+
     const duration = matchData.info.gameDuration;
     const minutes = Math.floor(duration/60);
     const seconds = duration % 60;
@@ -200,12 +204,12 @@ async function createCard(matchData, puuid, patch){
 
     // Add item build
 
-    const items = getItems(matchData, puuid, user)
+    const items = getItems(user)
 
     const itemImages = items.map(itemId => `
     <img 
         src="https://ddragon.leagueoflegends.com/cdn/${patch}/img/item/${itemId}.png"
-        width="32"
+        width="32px"
         alt="Item ${itemId}"
     </img>
     `).join('');
@@ -236,7 +240,12 @@ async function createCard(matchData, puuid, patch){
     card.innerHTML = `
     <div class="champIcons">
         <div class="MainChamp">
-            <img class="champimg" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${user.championId}.png" alt="${champName}" width="50">
+            <img 
+                class="champimg" 
+                src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${user.championId}.png" 
+                title="${champName}" 
+                width="50px"
+            />
         </div>
         <div class="allyTeam">
             ${allyTeamHTML}

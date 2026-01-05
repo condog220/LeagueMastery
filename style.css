@@ -289,6 +289,10 @@ body{
     width: 32px;
 }
 
+.runes{
+    margin-left: 4px;
+}
+
 .runes img{
     background-color: #2B608F;
     border: none;
