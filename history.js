@@ -65,6 +65,9 @@ async function displayMatchHistory(matchIds, server, APIKey, puuid) {
             const matchData = await getMatchDetails(matchId, server, APIKey);
             const historyCard = await createCard(matchData, puuid,patch);
             container.appendChild(historyCard);
+            requestAnimationFrame(() => {
+                historyCard.classList.add('visible');
+            });
         }
         catch (error) {
             console.error('Error fetching match')
@@ -100,6 +103,9 @@ function displayRankInfo(data){
     }
 
     profile.appendChild(rankInfo);
+    requestAnimationFrame(() => {
+        rankInfo.classList.toggle('visible');
+    });
 
 }
 
@@ -165,6 +171,8 @@ function getRunes(keystoneId, secondaryTreeId, runesData) {
 }
 
 
+
+
 async function createCard(matchData, puuid, patch){
     const card = document.createElement('div');
     card.classList.add('match-card');
@@ -172,6 +180,9 @@ async function createCard(matchData, puuid, patch){
 
     const user = matchData.info.participants.find(p => p.puuid === puuid);
     const team = user.teamId;
+
+
+    
 
     if(!user){
         card.innerHTML = '<p>Not found in match.</p>';
@@ -273,8 +284,24 @@ async function createCard(matchData, puuid, patch){
             <div class="items">
                 ${itemImages}
             </div>
-        </div>`;
+            <button class="details-btn">Details</button>
+        </div>
+        <div class="match-details">
+            <p>Damage Dealt: ${user.totalDamageDealtToChampions}</p>
+            <p>Vision Score: ${user.visionScore}</p>
+            <p>Wards Placed: ${user.wardsPlaced}</p>
+            <p>Gold Earned: ${user.goldEarned}</p>
+        </div>
+        `;
+
+    const detailsBtn = card.querySelector('.details-btn');
+    const matchDetails = card.querySelector('.match-details');
+
+    detailsBtn.addEventListener('click', () => {
+        matchDetails.classList.toggle('expanded');
+    });
 
     return card;
 
 }
+

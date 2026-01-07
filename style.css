@@ -72,6 +72,8 @@ body{
     text-decoration: none;
     border: #28344E solid 0.001px;
     border-radius: 7px;
+    padding: 2px;
+    font-size: medium;
 }
 
 .count{
@@ -162,6 +164,7 @@ body{
 }
 
 .match-card{
+    opacity: 0;
     display: flex;
     align-items: center;
     height: 20%;
@@ -172,6 +175,11 @@ body{
     margin-bottom: 20px;
     gap: 10px;
     box-sizing: border-box;
+}
+
+.match-card.visible{
+    opacity: 1;
+    transition: opacity 0.8s ease-in;
 }
 
 .champimg{
@@ -204,6 +212,7 @@ body{
 }
 
 .rankInfo{
+    opacity: 0;
     display: flex;
     flex-direction: column;
     background-color:#28344E;
@@ -215,6 +224,7 @@ body{
     text-align: center;
     border-radius: 10px;
     border:#5383E8 solid 0.001px;
+    transition: opacity 0.5s ease;
 }
 
 .rankInfo img{
@@ -294,8 +304,39 @@ body{
 }
 
 .runes img{
-    background-color: #2B608F;
+    background-color: inherit;
     border: none;
     border-radius: 15px;
 }
 
+.match-details{
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease;
+    padding: 0px;
+}
+
+.match-details.expanded{
+    opacity: 1;
+    margin-top: 10px; 
+    display: block;
+}
+
+ .rankInfo.visible{
+    opacity: 1;
+ }
+
+ .details-btn{
+    background-color: #2b608f;
+    text-decoration: none;
+    font-size: 15px;
+    border: none;
+    border-radius: 7px;
+    padding: 7px;
+    width: auto;
+    transition: 0.4s;
+ }
+
+ .details-btn:hover{
+    background-color:#5383E8;
+ }
