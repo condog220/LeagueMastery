@@ -14,7 +14,7 @@ A comprehensive web application for tracking League of Legends player statistics
 - **Recent Games**: View the last 20 matches.
 - **Match Details**: See outcome (Win/Loss), KDA, champion played, items built, and CS.
 - **Ranked Stats**: Display current Solo Queue rank, division, and winrate.
-- **Visuals**: Includes champion icons and item sprites.
+- **Visuals**: Includes champion icons, runes, ally icons.
 
 ### Free Champion Rotation (`top.html`)
 - **Free Rotation**: View the current list of free-to-play champions.
