@@ -181,6 +181,8 @@ async function createCard(matchData, puuid, patch){
     const user = matchData.info.participants.find(p => p.puuid === puuid);
     const team = user.teamId;
 
+    const win = user.win ? 'Win' : 'Lose';
+
 
     
 
@@ -193,6 +195,13 @@ async function createCard(matchData, puuid, patch){
     const champName = IdToName[user.championId] || '?';
     const kda = `${user.kills}/${user.deaths}/${user.assists}`;
     const creepScore = user.totalMinionsKilled + user.neutralMinionsKilled;
+    const totalKills = matchData.info.participants
+        .filter(p => p.teamId === team)
+        .reduce((sum, p) => sum + p.kills, 0);
+
+    const killParticipation = totalKills > 0 ?
+        (((user.kills + user.assists) / totalKills) * 100).toFixed(1) :
+        '0';
 
     // Retrieve runes
     
@@ -233,7 +242,7 @@ async function createCard(matchData, puuid, patch){
 
     // Add ally team icons 
 
-    const allies = getAlliedChamps(matchData, user, puuid, team)
+    const allies = getAlliedChamps(matchData, puuid, team)
 
     const allyTeamHTML = allies
     .map(ally => `
@@ -264,7 +273,7 @@ async function createCard(matchData, puuid, patch){
     </div>
         <div class="match-info">
             <div class="matchStats">
-                <p id="length">Match Duration: ${minutes}:${seconds}</p>
+                <p id="length">Match Duration: ${minutes}:${seconds} ${win}</p>
                 <p><strong>${champName}</strong></p>
                 <div class="runes">
                     <img
@@ -278,7 +287,7 @@ async function createCard(matchData, puuid, patch){
                         title="${secondaryTree.name}"
                     />
                 </div>
-                <p>KDA: ${kda}</p>
+                <p>KDA: ${kda} (${killParticipation}% KP)</p>
                 <p>CS: ${creepScore} (${csMin}/min)</p>
             </div>
             <div class="items">
