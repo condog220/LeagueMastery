@@ -233,6 +233,10 @@ async function createCard(matchData, puuid, patch){
         alt="Item ${itemId}"
     </img>
     `).join('');
+
+    // Set win/lose class
+
+    const outcomeClass = user.win ? 'outcome-win' : 'outcome-lose';
     
     if(user.win === true){
         card.classList.add('win');
@@ -273,7 +277,7 @@ async function createCard(matchData, puuid, patch){
     </div>
         <div class="match-info">
             <div class="matchStats">
-                <p id="length">Match Duration: ${minutes}:${seconds} ${win}</p>
+                <p id="length">Match Duration: ${minutes}:${seconds} <span class="outcome ${outcomeClass}">${win}</span></p>
                 <p><strong>${champName}</strong></p>
                 <div class="runes">
                     <img

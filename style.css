@@ -209,7 +209,7 @@ body{
 
 .lose{
     background: #59343B;
-    border: #E84057 solid
+    border: #E84057 solid;
 }
 
 .rankInfo{
@@ -341,3 +341,16 @@ body{
  .details-btn:hover{
     background-color:#5383E8;
  }
+
+ .outcome{
+    font-weight: bold;
+    font-size: medium;
+ }
+
+ .outcome-win{
+    color: green;
+ }
+
+.outcome-lose{
+    color: red;
+}
